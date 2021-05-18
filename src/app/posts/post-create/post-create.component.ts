@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -10,6 +11,8 @@ import { PostsService } from '../posts.service';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
+  form: FormGroup;
+  imagePreview: string;
   isLoading = false;
   post: Post;
   private mode: string = 'create';
@@ -18,6 +21,11 @@ export class PostCreateComponent implements OnInit {
   constructor(public route: ActivatedRoute, public postsService: PostsService) {}
 
   ngOnInit() {
+    this.form = new FormGroup({
+      title: new FormControl(null, { validators: [Validators.required, Validators.minLength(3)] }),
+      content: new FormControl(null, { validators: [Validators.required] }),
+      image: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] })
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         this.mode = 'edit';
@@ -26,6 +34,7 @@ export class PostCreateComponent implements OnInit {
         this.postsService.getPost(this.postId).subscribe(postData => {
           this.isLoading = false;
           this.post = { id: postData._id, title: postData.title, content: postData.content };
+          this.form.setValue({ title: this.post.title, content: this.post.content });
         });
       } else {
         this.mode = 'create',
@@ -34,16 +43,28 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  onSavePost(form: NgForm): void {
-    if (form.invalid) {
+  onImagePicked(event: Event): void {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({ image: file });
+    this.form.get('image').updateValueAndValidity();
+    // Create an image preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onSavePost(): void {
+    if (this.form.invalid) {
       return;
     }
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.postsService.addPost(form.value.title, form.value.content);
+      this.postsService.addPost(this.form.value.title, this.form.value.content);
     } else {
-      this.postsService.updatePost(this.postId, form.value.title, form.value.content);
+      this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content);
     }
-    form.resetForm();
+    this.form.reset();
   }
 }
