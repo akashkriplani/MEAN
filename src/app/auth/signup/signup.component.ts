@@ -19,9 +19,6 @@ export class SignupComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    this.authService.createUser(form.value.email, form.value.password).subscribe((result) => {
-      console.log(result);
-    });
+    this.authService.createUser(form.value.email, form.value.password);
   }
-
 }
