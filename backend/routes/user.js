@@ -48,7 +48,7 @@ router.post('/login', (req, res, next) => {
     // Create a new JWT token
     const token = jwt.sign(
       { email: fetchedUser.email, userId: fetchedUser._id },
-      'secret_key_this_should_be_a_longer_string_for_dev_purposes_this_is_a_dummy_text',
+      'secret_key_this_should_be_longer',
       { expiresIn: '1h' }
     );
     res.status(200).json({
