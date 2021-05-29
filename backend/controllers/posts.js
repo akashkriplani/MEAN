@@ -89,7 +89,7 @@ exports.updatePost = (req, res, next) => {
   });
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then((result) => {
     // If the user is the creator of the post, then nModified will have value > 0, in this case 1. If not, then he is not the creator of the post, so he should not be able to edit it.
-    if (result?.nModified > 0) {
+    if (result?.n > 0) {
       res.status(200).json({ message: 'Post updated successfully.' });
     } else {
       res.status(401).json({ message: 'Not authorized.' });
