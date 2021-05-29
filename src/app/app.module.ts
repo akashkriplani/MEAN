@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { AngularMaterialModule } from './angular-material.module';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { PostModule } from './posts/post.module';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { AppComponent } from './app.component';
-import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HeaderComponent } from './header/header.component';
-import { PostListComponent } from './posts/post-list/post-list.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ErrorComponent } from './error/error.component';
@@ -18,9 +17,7 @@ import { ErrorComponent } from './error/error.component';
 @NgModule({
   declarations: [
     AppComponent,
-    PostCreateComponent,
     HeaderComponent,
-    PostListComponent,
     LoginComponent,
     SignupComponent,
     ErrorComponent
@@ -30,9 +27,9 @@ import { ErrorComponent } from './error/error.component';
     AppRoutingModule,
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    PostModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
