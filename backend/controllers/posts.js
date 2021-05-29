@@ -55,9 +55,9 @@ exports.createPost = (req, res, next) => {
         id: createdPost._id
       }
     })
-      .catch((error) => {
-        res.status(500).json({ message: 'Creating a post failed!' });
-      });
+  })
+  .catch((error) => {
+    res.status(500).json({ message: 'Creating a post failed!' });
   });
 };
 
