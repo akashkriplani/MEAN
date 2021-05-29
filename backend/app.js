@@ -8,7 +8,7 @@ const app = express();
 const postRoutes = require('./routes/posts');
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://akash:Vvyoke1cBgNrxOoL@cluster0.hofn1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }).then(() => {
+mongoose.connect('mongodb+srv://akash:' + process.env.MONGO_ATLAS_PWD + '@cluster0.hofn1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }).then(() => {
   console.log('Connected to MongoDB successfully!')
 }).catch(() => {
   console.log('Connection to MongoDB failed!');

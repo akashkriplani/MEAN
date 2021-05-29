@@ -44,7 +44,7 @@ exports.userLogin = (req, res, next) => {
     // Create a new JWT token
     const token = jwt.sign(
       { email: fetchedUser.email, userId: fetchedUser._id },
-      'secret_key_this_should_be_longer',
+      process.env.JWT_SECRET_KEY,
       { expiresIn: '1h' }
     );
     res.status(200).json({
