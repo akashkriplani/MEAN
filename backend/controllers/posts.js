@@ -61,7 +61,7 @@ exports.createPost = (req, res, next) => {
   });
 };
 
-exports.updatePost = (req, res, next) => {
+exports.deletePost = (req, res, next) => {
   Post.deleteOne({ _id: req.params.id, creator: req.userData.userId }).then((result) => {
     // If the user is the creator of the post, then n will have value > 0, in this case 1. If not, then he is not the creator of the post, so he should not be able to delete it.
     if (result?.n > 0) {
@@ -74,7 +74,7 @@ exports.updatePost = (req, res, next) => {
   })
 };
 
-exports.deletePost = (req, res, next) => {
+exports.updatePost = (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + '://' + req.get('host');
@@ -95,6 +95,6 @@ exports.deletePost = (req, res, next) => {
       res.status(401).json({ message: 'Not authorized.' });
     }
   }).catch((error) => {
-    res.status(500).json({ message: 'Couldn\'\t update post!' });
+    res.status(500).json({ message: 'Could not update post!' });
   });
 };
